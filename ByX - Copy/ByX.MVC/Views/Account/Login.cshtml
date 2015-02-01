@@ -1,0 +1,72 @@
+﻿@model ByX.Model.User
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>PHONE BACK UP SERVICE</title>
+</head>
+<body>
+  @Html.X().ResourceManager()
+
+    @(
+        Html.X().Window()
+            .Closable(false)
+            .CloseAction(CloseAction.Destroy)
+            .Resizable(false)
+            .Height(150)
+            .Icon(Icon.Lock)
+            .Title("Login")
+            .Draggable(false)
+            .Width(350)
+            .Modal(true)
+            .BodyPadding(5)
+            .Layout(LayoutType.Fit)
+            .Items(
+                Html.X().FormPanel()
+                    .Layout(LayoutType.Form)
+                    .Border(false)
+                    .BodyStyle("background-color:transparent;")
+                    .Items(
+                        Html.X().TextFieldFor(m=>m.Username)
+                            .ID("txtUsername")
+                            
+                            .FieldLabel("Username")
+                            .AllowBlank(false)
+                            
+                            .BlankText("Your username is required."),
+                       
+                    
+                        Html.X().TextFieldFor(m=>m.Password)
+                            .ID("txtPassword")
+
+                            .InputType(Ext.Net.InputType.Password)
+                            .FieldLabel("Password")
+                            .AllowBlank(false)
+                            .BlankText("Your password is required."),
+                            Html.X().Label().Text(@ViewData["Name"]  +"bla bla")
+                           
+                    )
+            )                
+            .Buttons(
+                Html.X().Button()
+                   .Text("Login")
+                   .Icon(Icon.Accept)
+                   .DirectEvents(de => {
+                        de.Click.Action = "Login";
+                    
+                        de.Click.EventMask.ShowMask = true;
+                        de.Click.EventMask.Msg = "Verifying...";
+                        de.Click.EventMask.MinDelay = 1000;
+                        de.Click.FormID = "#(return this.up('window').down('form');)";
+                   })
+            )
+    )
+
+</body>
+</html>

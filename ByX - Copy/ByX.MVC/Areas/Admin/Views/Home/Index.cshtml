@@ -1,0 +1,96 @@
+﻿@using Ext.Net
+@using Ext.Net.MVC
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+  
+</head>
+<body>
+    @Html.X().ResourceManager()
+    @(
+ Html.X().Viewport()
+                    .Layout(LayoutType.Border)
+                    .Items(
+                        Html.X().Panel()
+                            .Region(Region.West)
+                            .Title("Menu")
+                            .Width(200)
+                            .Collapsible(true)
+                            .Split(true)
+                            .MinWidth(175)
+                            .MaxWidth(400)
+                            .MarginSpec("5 0 5 5")
+                            .Layout(LayoutType.Accordion)
+                            .Items(
+
+
+                                Html.X().MenuPanel()
+                                    .Collapsed(true)
+                                    .Icon(Icon.Note)
+                                    .AutoScroll(true)
+                                    .Title("Kullanıcı işlemleri")
+                                    .ID("PNL34")
+                                    .BodyPadding(0)
+                                    .Menu(menu =>
+                                    {
+
+                                        menu.Items.Add(Html.X().MenuItem().ID("1a").Text("Apartmanlar").Icon(Icon.House)
+                                        .DirectEvents(m =>
+                                        {
+                                            m.Click.Url = "ApartmenRegisteredManager/AddTab";
+                                            m.Click.ExtraParams.Add(new { containerid = "TabPanelMain", viewname = "IndexPW" });
+                                            m.Click.Before = "var tab = #{TabPanelMain}.getComponent('tabpnl10'); if(!tab){return true;}else{return false;} ";
+
+
+                                        }));
+
+
+                                        menu.Items.Add(Html.X().MenuItem().ID("2a").Text("SİPARİŞLER").Icon(Icon.Anchor)
+                                      .DirectEvents(m =>
+                                      {
+                                          m.Click.Url = "Siparisler/AddTab";
+                                          m.Click.ExtraParams.Add(new { conid = "TabPanel1", pnlid = "tabpnl11", viewname = "Index" });
+                                          m.Click.Before = "var tab = #{TabPanelMain}.getComponent('tabpnl11'); if(!tab){return true;}else{return false;} ";
+                                      }));
+
+                                        menu.Items.Add(Html.X().MenuItem().ID("3a").Text("KATAGORI/ALTKATAGORI").Icon(Icon.ApplicationCascade)
+                               .DirectEvents(m =>
+                               {
+                                   m.Click.Url = "KatAltKat/AddTab";
+                                   m.Click.ExtraParams.Add(new { conid = "TabPanel1", pnlid = "tabpnl12", viewname = "Index" });
+                                   m.Click.Before = "var tab = #{TabPanelMain}.getComponent('tabpnl12'); if(!tab){return true;}else{return false;} ";
+                               }));
+
+
+
+
+                                    })
+
+        )
+                            ,
+
+                       Html.X().TabPanel()
+                       .ID("TabPanelMain")
+
+                            .Region(Region.Center)
+                            .Title("APARTMAN YÖNETİCİ SİSTEMİ")
+                            .MarginSpec("5 5 5 0")
+                                    .DirectEvents(de =>
+                                    {
+                                        //de.TabClose.Url = "TabCloseEvent";
+                                        //de.TabClose.ExtraParams.Add(new { th });
+
+
+                                    })
+
+     ))
+    
+</body>
+</html>

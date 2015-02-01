@@ -1,0 +1,106 @@
+﻿@using Ext.Net
+@using Ext.Net.MVC
+
+
+
+@(Html.X().Panel()
+      .Title("PHONES")
+      .Closable(true)
+      .ID("phoneListPanel")
+      .Layout(LayoutType.Fit)
+      .Icon(Icon.PhoneKey)
+      .Items(
+
+          Html.X().GridPanel()
+              .Layout(LayoutType.Fit)
+        .TopBar(
+     @Html.X().Toolbar().Add(
+     @Html.X().Button().Text("show phone details")
+     .Icon(Icon.UserAdd).OnClientClick("App.winphonedetails.show();")
+     
+        )
+     )
+
+    
+              .Store(Html.X().Store()
+                         
+                  .AutoLoad(true)
+                  .ID("strPhoneList")
+                  .PageSize(5)
+                  .RemoteFilter(true)
+                  .RemoteSort(false)
+                  .Model(Html.X().Model()
+                      .Fields(
+                          new ModelField("Id"),
+                          new ModelField("Name", ModelFieldType.String),
+                          new ModelField("ApartmanCount", ModelFieldType.String),
+                          new ModelField("Address", ModelFieldType.String)
+                      )
+                  )
+                  .Proxy(Html.X().AjaxProxy()
+                  
+                      .Url(Url.Action("Read"))
+
+                      .Reader(Html.X().JsonReader().Root("data"))
+                      .API(api => api.Sync = "Read")
+                  ).RemotePaging(false)
+              )
+              .ColumnModel(
+
+
+                  Html.X().Column().Text("ID").DataIndex("Id").Flex(1),
+                  Html.X().Column().Text("Name").DataIndex("Name").Flex(1),
+                  Html.X().Column().Text("ApartmanCount").DataIndex("ApartmanCount").Flex(1),
+                  Html.X().Column().Text("Address").DataIndex("Address").Flex(1),
+
+
+                  Html.X().CommandColumn().Width(60).Commands(
+                      Html.X().GridCommand().CommandName("Sil").Text("Sil").Icon(Icon.Delete))
+                      .DirectEvents(de =>
+                      {
+                          de.Command.Url = "Block/DeleteBlock";
+                          de.Command.ExtraParams.Add(
+                              new Parameter { Name = "blockid", Value = "record.get('Id')", Mode = ParameterMode.Raw });
+                          de.Command.Confirmation.ConfirmRequest=true;
+                          de.Command.Confirmation.Title = "Uyarı";
+                          de.Command.Confirmation.Message = "Silmek istediğinizden eminmisiniz?";
+                          de.Command.Success = "function (result) {Ext.Msg.notify('Uyarı','Silme işlemi başarılı');App.strBlock.reload();  } ";
+                          de.Command.Failure = "function (result) { Ext.Msg.notify('Uyarı','Silerken hata oluşdu!!');}";
+
+                      })
+
+    
+
+              )
+              .Listeners(l => l.SelectionChange.Handler = "if (selected[0]) { App.phonedetailPnl.getForm().loadRecord(selected[0]); }")
+
+
+              .BottomBar(
+                  Html.X().PagingToolbar().DisplayInfo(true).DisplayMsg("Phone list {0} - {1} of {2}").EmptyMsg("There is no phone")
+
+              )
+
+
+      ))
+
+
+@Html.X().Window().ID("winphonedetails").CloseAction(CloseAction.Hide).Items(item:
+Html.X().FormPanel()
+        
+
+    .BodyPadding(5)
+    .Layout(LayoutType.Form)
+    .Frame(true)
+    .ID("phonedetailPnl")
+    .Items(
+        
+
+      
+        Html.X().TextField().FieldLabel("Ad").Flex(1).AllowBlank(false)
+       
+     
+
+
+    )
+
+    ).Title("phone details").Width(500).Height(350).Hidden(true)
