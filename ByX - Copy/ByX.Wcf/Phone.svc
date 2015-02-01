@@ -1,0 +1,3 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="ByX.Wcf.Phone,ByX.Wcf" CodeBehind="Phone.svc.cs" 
+    Factory="Autofac.Integration.Wcf.AutofacServiceHostFactory, Autofac.Integration.Wcf"
+    %>
